@@ -17,8 +17,8 @@ import ssl
 KOL_LINKS = {
     'janesaowaluk': 'https://vt.tiktok.com/ZSHjeYw5F/',
     'siriwan040541': 'https://vt.tiktok.com/ZSHMcUwyT/',
+    'ntkling': 'https://vt.tiktok.com/ZSHhj6w1E/',
     # เพิ่ม KOL ใหม่ที่โพสต์แล้วตรงนี้:
-    # 'nisakorn_pui': 'https://vt.tiktok.com/xxx/',
 }
 
 def scrape_tiktok(url, retries=3):
