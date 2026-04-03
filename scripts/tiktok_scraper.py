@@ -16,8 +16,8 @@ import ssl
 # === KOL VIDEO LINKS ===
 KOL_LINKS = {
     'janesaowaluk': 'https://vt.tiktok.com/ZSHjeYw5F/',
+    'siriwan040541': 'https://vt.tiktok.com/ZSHMcUwyT/',
     # เพิ่ม KOL ใหม่ที่โพสต์แล้วตรงนี้:
-    # 'siriwan040541': 'https://vt.tiktok.com/xxx/',
     # 'nisakorn_pui': 'https://vt.tiktok.com/xxx/',
 }
 

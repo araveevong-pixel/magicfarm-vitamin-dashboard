@@ -30,12 +30,12 @@ KOL_METADATA = {
 # === KOL LINKS ===
 KOL_LINKS = {
     'janesaowaluk': 'https://vt.tiktok.com/ZSHjeYw5F/',
-    # เพิ่ม KOL ใหม่ตรงนี้
+    'siriwan040541': 'https://vt.tiktok.com/ZSHMcUwyT/',
 }
 
 # === KOLs ที่ยังไม่โพสต์ ===
 NOT_POSTED_KOLS = {
-    'siriwan040541', 'nisakorn_pui', 'mildmint.1', 'party_saran',
+    'nisakorn_pui', 'mildmint.1', 'party_saran',
     'pluemwattanathon', 'ntkling', 'jamjiramaoon', 'bbew_ddear',
     'bee112711', 'bass__inmeesub', 'milin_wongsa', 'aeaeyberry',
 }
