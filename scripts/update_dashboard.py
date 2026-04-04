@@ -31,7 +31,7 @@ KOL_METADATA = {
 KOL_LINKS = {
     'janesaowaluk': 'https://vt.tiktok.com/ZSHjeYw5F/',
     'siriwan040541': 'https://vt.tiktok.com/ZSHMcUwyT/',
-    'ntkling': 'https://vt.tiktok.com/ZSHhj6w1E/',
+    'ntkling': 'https://vt.tiktok.com/ZSHhG79DT/',
 }
 
 # === KOLs ที่ยังไม่โพสต์ ===

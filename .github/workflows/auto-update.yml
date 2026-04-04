@@ -26,6 +26,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install yt-dlp
+        run: pip install yt-dlp
+
       - name: Run TikTok Scraper
         run: |
           cd scripts

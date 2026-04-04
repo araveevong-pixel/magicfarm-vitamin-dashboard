@@ -2,6 +2,8 @@
 """
 TikTok Scraper for Magic Farm Vitamin 2026
 Scrapes views, likes, shares, comments, saves from TikTok video pages.
+Uses yt-dlp for accurate data (including saves/collectCount).
+Falls back to urllib+regex if yt-dlp fails.
 Output: JSON file with KOL metrics.
 """
 
@@ -9,6 +11,7 @@ import json
 import re
 import sys
 import time
+import subprocess
 import urllib.request
 import urllib.error
 import ssl
@@ -17,12 +20,37 @@ import ssl
 KOL_LINKS = {
     'janesaowaluk': 'https://vt.tiktok.com/ZSHjeYw5F/',
     'siriwan040541': 'https://vt.tiktok.com/ZSHMcUwyT/',
-    'ntkling': 'https://vt.tiktok.com/ZSHhj6w1E/',
+    'ntkling': 'https://vt.tiktok.com/ZSHhG79DT/',
     # เพิ่ม KOL ใหม่ที่โพสต์แล้วตรงนี้:
 }
 
-def scrape_tiktok(url, retries=3):
-    """Scrape metrics from a TikTok video URL."""
+
+def scrape_with_ytdlp(url):
+    """Scrape metrics using yt-dlp (gets saves/collectCount)."""
+    try:
+        result = subprocess.run(
+            ['yt-dlp', '--dump-json', '--no-download', url],
+            capture_output=True, text=True, timeout=60
+        )
+        if result.returncode != 0:
+            return None
+
+        info = json.loads(result.stdout)
+        return {
+            'views': int(info.get('view_count', 0) or 0),
+            'likes': int(info.get('like_count', 0) or 0),
+            'shares': int(info.get('repost_count', 0) or 0),
+            'comments': int(info.get('comment_count', 0) or 0),
+            'saves': int(info.get('collect_count', 0) or info.get('favorite_count', 0) or 0),
+            'followers': int(info.get('channel_follower_count', 0) or 0),
+        }
+    except Exception as e:
+        print(f"  yt-dlp failed: {e}")
+        return None
+
+
+def scrape_with_urllib(url, retries=3):
+    """Fallback: scrape metrics using urllib + regex."""
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
@@ -39,7 +67,6 @@ def scrape_tiktok(url, retries=3):
             with urllib.request.urlopen(req, context=ctx, timeout=30) as resp:
                 html = resp.read().decode('utf-8', errors='ignore')
 
-            # Try to find SIGI_STATE or __UNIVERSAL_DATA
             data = {}
 
             # Method 1: JSON-LD
@@ -53,7 +80,7 @@ def scrape_tiktok(url, retries=3):
                 except:
                     pass
 
-            # Method 2: Regex patterns from page source
+            # Method 2: Regex patterns
             patterns = {
                 'views': [r'"playCount"\s*:\s*(\d+)', r'"viewCount"\s*:\s*(\d+)'],
                 'likes': [r'"diggCount"\s*:\s*(\d+)', r'"likeCount"\s*:\s*(\d+)'],
@@ -81,10 +108,24 @@ def scrape_tiktok(url, retries=3):
             }
 
         except Exception as e:
-            print(f"  Attempt {attempt+1} failed: {e}")
+            print(f"  urllib attempt {attempt+1} failed: {e}")
             time.sleep(2)
 
     return None
+
+
+def scrape_tiktok(url):
+    """Scrape TikTok: try yt-dlp first, fall back to urllib."""
+    # Try yt-dlp first (gets saves)
+    data = scrape_with_ytdlp(url)
+    if data and data['views'] > 0:
+        print(f"  (yt-dlp)")
+        return data
+
+    # Fallback to urllib
+    print(f"  (fallback to urllib)")
+    data = scrape_with_urllib(url)
+    return data
 
 
 def main():
