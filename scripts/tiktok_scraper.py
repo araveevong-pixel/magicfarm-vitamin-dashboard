@@ -29,19 +29,40 @@ def scrape_with_ytdlp(url):
     """Scrape metrics using yt-dlp (gets saves/collectCount)."""
     try:
         result = subprocess.run(
-            ['yt-dlp', '--dump-json', '--no-download', url],
+            ['yt-dlp', '--dump-json', '--no-download', '--no-warnings', url],
             capture_output=True, text=True, timeout=60
         )
+
         if result.returncode != 0:
-            return None
+            # Retry with --age-limit for age-restricted content
+            if 'comfortable' in result.stderr or 'Log in' in result.stderr:
+                print(f"    Age-restricted, retrying with --age-limit 99...")
+                result = subprocess.run(
+                    ['yt-dlp', '--dump-json', '--no-download', '--no-warnings',
+                     '--age-limit', '99', url],
+                    capture_output=True, text=True, timeout=60
+                )
+            if result.returncode != 0:
+                return None
 
         info = json.loads(result.stdout)
+
+        # Debug: show available count fields
+        debug_keys = {k: v for k, v in info.items()
+                      if any(word in k.lower() for word in ['count', 'save', 'collect', 'favorite', 'bookmark'])}
+        if debug_keys:
+            print(f"    [DEBUG] count fields: {debug_keys}")
+
         return {
             'views': int(info.get('view_count', 0) or 0),
             'likes': int(info.get('like_count', 0) or 0),
             'shares': int(info.get('repost_count', 0) or 0),
             'comments': int(info.get('comment_count', 0) or 0),
-            'saves': int(info.get('collect_count', 0) or info.get('favorite_count', 0) or 0),
+            'saves': int(info.get('save_count')
+                        or info.get('collect_count')
+                        or info.get('favorite_count')
+                        or info.get('bookmark_count')
+                        or 0),
             'followers': int(info.get('channel_follower_count', 0) or 0),
         }
     except Exception as e:
