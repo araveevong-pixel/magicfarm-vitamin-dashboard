@@ -32,12 +32,14 @@ KOL_LINKS = {
     'janesaowaluk': 'https://vt.tiktok.com/ZSHjeYw5F/',
     'siriwan040541': 'https://vt.tiktok.com/ZSHMcUwyT/',
     'ntkling': 'https://vt.tiktok.com/ZSHhG79DT/',
+    'jamjiramaoon': 'https://vt.tiktok.com/ZSH5hy7Tg/',
+    'bbew_ddear': 'https://vt.tiktok.com/ZSHyyjQ7p/',
 }
 
 # === KOLs ที่ยังไม่โพสต์ ===
 NOT_POSTED_KOLS = {
     'nisakorn_pui', 'mildmint.1', 'party_saran',
-    'pluemwattanathon', 'jamjiramaoon', 'bbew_ddear',
+    'pluemwattanathon',
     'bee112711', 'bass__inmeesub', 'milin_wongsa', 'aeaeyberry',
 }
 

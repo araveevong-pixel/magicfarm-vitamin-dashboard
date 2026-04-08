@@ -21,6 +21,8 @@ KOL_LINKS = {
     'janesaowaluk': 'https://vt.tiktok.com/ZSHjeYw5F/',
     'siriwan040541': 'https://vt.tiktok.com/ZSHMcUwyT/',
     'ntkling': 'https://vt.tiktok.com/ZSHhG79DT/',
+    'jamjiramaoon': 'https://vt.tiktok.com/ZSH5hy7Tg/',
+    'bbew_ddear': 'https://vt.tiktok.com/ZSHyyjQ7p/',
     # เพิ่ม KOL ใหม่ที่โพสต์แล้วตรงนี้:
 }
 
