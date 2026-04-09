@@ -34,13 +34,17 @@ KOL_LINKS = {
     'ntkling': 'https://vt.tiktok.com/ZSHhG79DT/',
     'jamjiramaoon': 'https://vt.tiktok.com/ZSH5hy7Tg/',
     'bbew_ddear': 'https://vt.tiktok.com/ZSHyyjQ7p/',
+    'mildmint.1': 'https://vt.tiktok.com/ZSHmUc8ef/',
+    'party_saran': 'https://vt.tiktok.com/ZSHmS59ap/',
+    'pluemwattanathon': 'https://vt.tiktok.com/ZSHmAPang/',
+    'bee112711': 'https://vt.tiktok.com/ZSHubfXt5/',
+    'bass__inmeesub': 'https://vt.tiktok.com/ZSHmMEMu2/',
 }
 
 # === KOLs ที่ยังไม่โพสต์ ===
 NOT_POSTED_KOLS = {
-    'nisakorn_pui', 'mildmint.1', 'party_saran',
-    'pluemwattanathon',
-    'bee112711', 'bass__inmeesub', 'milin_wongsa', 'aeaeyberry',
+    'nisakorn_pui',
+    'milin_wongsa', 'aeaeyberry',
 }
 
 
