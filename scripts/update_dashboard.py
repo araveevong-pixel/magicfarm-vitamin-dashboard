@@ -42,6 +42,7 @@ KOL_LINKS = {
     'pluemwattanathon': 'https://vt.tiktok.com/ZSHmAPang/',
     'bee112711': 'https://vt.tiktok.com/ZSHubfXt5/',
     'bass__inmeesub': 'https://vt.tiktok.com/ZSHmMEMu2/',
+    'milin_wongsa': 'https://www.tiktok.com/@milin_wongsa/video/7627008489604369684',
     'on_supaporn': 'https://vt.tiktok.com/ZSHxQ3y1L/',
     'phanwasa.4': 'https://vt.tiktok.com/ZSHxh72uX/',
 }
@@ -49,7 +50,6 @@ KOL_LINKS = {
 # === KOLs ที่ยังไม่โพสต์ ===
 NOT_POSTED_KOLS = {
     'nisakorn_pui',
-    'milin_wongsa',
     'f52hz_', 'somjeedna',
 }
 
