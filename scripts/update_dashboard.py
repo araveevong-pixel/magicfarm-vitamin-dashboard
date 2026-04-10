@@ -24,7 +24,10 @@ KOL_METADATA = {
     'bee112711':        {'followers': 458700,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'bee112711',        'gender': 'ช', 'budget': 10000},
     'bass__inmeesub':   {'followers': 506700,  'tier': 'Macro', 'category': 'ทำงานกลางแจ้ง', 'product': 'Collagen', 'displayName': 'บอสเบลไนติงเจล',  'gender': 'ช', 'budget': 26000},
     'milin_wongsa':     {'followers': 160600,  'tier': 'Macro', 'category': 'ทำงานกลางแจ้ง', 'product': 'Collagen', 'displayName': 'เจ้าพ่อพันล้าน',  'gender': 'ช', 'budget': 28000},
-    'aeaeyberry':       {'followers': 179100,  'tier': 'Macro', 'category': 'หนุ่มสาวโรงงาน', 'product': 'Collagen', 'displayName': 'aeaeyberry',       'gender': 'ญ', 'budget': 15000},
+    'on_supaporn':      {'followers': 327700,  'tier': 'Macro', 'category': 'หนุ่มสาวโรงงาน', 'product': 'Fiber',    'displayName': 'on_supaporn',      'gender': 'ญ', 'budget': 10000},
+    'f52hz_':           {'followers': 437800,  'tier': 'Macro', 'category': 'ทำงานกลางแจ้ง', 'product': 'Collagen', 'displayName': 'f52hz_',           'gender': 'ญ', 'budget': 10000},
+    'somjeedna':        {'followers': 258600,  'tier': 'Macro', 'category': 'หนุ่มสาวโรงงาน', 'product': 'Collagen', 'displayName': 'Soomjeedna',       'gender': 'ญ', 'budget': 10000},
+    'phanwasa.4':       {'followers': 96200,   'tier': 'Micro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'phanwasa.4',       'gender': 'ญ', 'budget': 10000},
 }
 
 # === KOL LINKS ===
@@ -39,12 +42,15 @@ KOL_LINKS = {
     'pluemwattanathon': 'https://vt.tiktok.com/ZSHmAPang/',
     'bee112711': 'https://vt.tiktok.com/ZSHubfXt5/',
     'bass__inmeesub': 'https://vt.tiktok.com/ZSHmMEMu2/',
+    'on_supaporn': 'https://vt.tiktok.com/ZSHxQ3y1L/',
+    'phanwasa.4': 'https://vt.tiktok.com/ZSHxh72uX/',
 }
 
 # === KOLs ที่ยังไม่โพสต์ ===
 NOT_POSTED_KOLS = {
     'nisakorn_pui',
-    'milin_wongsa', 'aeaeyberry',
+    'milin_wongsa',
+    'f52hz_', 'somjeedna',
 }
 
 

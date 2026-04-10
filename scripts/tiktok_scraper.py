@@ -28,6 +28,8 @@ KOL_LINKS = {
     'pluemwattanathon': 'https://vt.tiktok.com/ZSHmAPang/',
     'bee112711': 'https://vt.tiktok.com/ZSHubfXt5/',
     'bass__inmeesub': 'https://vt.tiktok.com/ZSHmMEMu2/',
+    'on_supaporn': 'https://vt.tiktok.com/ZSHxQ3y1L/',
+    'phanwasa.4': 'https://vt.tiktok.com/ZSHxh72uX/',
     # เพิ่ม KOL ใหม่ที่โพสต์แล้วตรงนี้:
 }
 
