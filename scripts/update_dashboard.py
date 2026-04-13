@@ -45,12 +45,13 @@ KOL_LINKS = {
     'milin_wongsa': 'https://www.tiktok.com/@milin_wongsa/video/7627008489604369684',
     'on_supaporn': 'https://vt.tiktok.com/ZSHxQ3y1L/',
     'phanwasa.4': 'https://vt.tiktok.com/ZSHxh72uX/',
+    'f52hz_': 'https://vt.tiktok.com/ZSHXMaYvL/',
+    'somjeedna': 'https://vt.tiktok.com/ZSH4xYktY/',
 }
 
 # === KOLs ที่ยังไม่โพสต์ ===
 NOT_POSTED_KOLS = {
     'nisakorn_pui',
-    'f52hz_', 'somjeedna',
 }
 
 
