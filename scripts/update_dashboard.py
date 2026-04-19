@@ -47,12 +47,11 @@ KOL_LINKS = {
     'phanwasa.4': 'https://vt.tiktok.com/ZSHxh72uX/',
     'f52hz_': 'https://vt.tiktok.com/ZSHXMaYvL/',
     'somjeedna': 'https://vt.tiktok.com/ZSH4xYktY/',
+    'nisakorn_pui': 'https://www.tiktok.com/@nisakorn_pui/video/7630386912565480711',
 }
 
 # === KOLs ที่ยังไม่โพสต์ ===
-NOT_POSTED_KOLS = {
-    'nisakorn_pui',
-}
+NOT_POSTED_KOLS = set()  # ทุกคนโพสต์แล้ว
 
 
 def build_kol_data_js(scrape_data):

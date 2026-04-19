@@ -33,6 +33,7 @@ KOL_LINKS = {
     'phanwasa.4': 'https://vt.tiktok.com/ZSHxh72uX/',
     'f52hz_': 'https://vt.tiktok.com/ZSHXMaYvL/',
     'somjeedna': 'https://vt.tiktok.com/ZSH4xYktY/',
+    'nisakorn_pui': 'https://www.tiktok.com/@nisakorn_pui/video/7630386912565480711',
     # เพิ่ม KOL ใหม่ที่โพสต์แล้วตรงนี้:
 }
 
