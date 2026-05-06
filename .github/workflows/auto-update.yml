@@ -14,6 +14,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: dashboard-update
+  cancel-in-progress: false
+
 jobs:
   scrape-and-update:
     runs-on: ubuntu-latest
