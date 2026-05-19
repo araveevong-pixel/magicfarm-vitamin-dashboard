@@ -113,6 +113,11 @@ table.data tr:hover td{background:#f7f9fc}
 .filter-bar select,.filter-bar input{padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:#fff}
 .filter-bar label{font-size:12px;color:var(--text2);font-weight:500}
 
+.lot-toggle{display:flex;gap:4px;margin-left:16px}
+.lot-btn{padding:6px 20px;border-radius:20px;border:1px solid var(--border);background:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text2)}
+.lot-btn:hover{border-color:var(--green);color:var(--green)}
+.lot-btn.active{background:var(--green);color:#fff;border-color:var(--green)}
+
 @media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.grid-2,.grid-3,.grid-2-1{grid-template-columns:1fr}}
 </style>
@@ -126,6 +131,10 @@ table.data tr:hover td{background:#f7f9fc}
     Magic Farm Vitamin 2026
   </div>
   <div class="title">KOL Campaign Dashboard</div>
+  <div class="lot-toggle">
+    <button class="lot-btn active" onclick="switchLot(1)">Lot 1</button>
+    <button class="lot-btn" onclick="switchLot(2)">Lot 2</button>
+  </div>
   <div class="actions">
     <button class="btn" onclick="exportCSV()">📥 Export CSV</button>
     <button class="btn" onclick="exportJSON()">📥 Export JSON</button>
@@ -244,6 +253,38 @@ let KOL_DATA = [  // auto-updated 19 May 2026 01:56
   {username:'phanwasa.4',displayName:'phanwasa.4',tier:'Micro',platform:'TikTok',category:'Heath & Beauty',product:'Collagen',gender:'ญ',followers:96200,views:777400,likes:2946,shares:23,comments:27,saves:108,posts:1,kpi_views:0,posted:true,link:'https://vt.tiktok.com/ZSHxh72uX/',budget:10000},
 ];
 
+let KOL_DATA_LOT2 = [  // auto-updated — will be replaced by update_dashboard.py
+];
+
+let currentLot = 1;
+let KOL_DATA_ACTIVE = KOL_DATA;
+
+function switchLot(lot) {
+  currentLot = lot;
+  KOL_DATA_ACTIVE = lot === 1 ? KOL_DATA : KOL_DATA_LOT2;
+
+  // Update button states
+  document.querySelectorAll('.lot-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i + 1) === lot);
+  });
+
+  // Update title
+  document.querySelector('.header .title').innerHTML = '📊 Magic Farm Vitamin 2026 — Lot ' + lot;
+
+  // Re-generate daily data
+  DAILY_DATA = {};
+  KOL_DATA_ACTIVE.forEach(k => { DAILY_DATA[k.username] = generateDailyData(k, 28); });
+
+  // Reset filters and re-render
+  filteredData = [...KOL_DATA_ACTIVE];
+  initFilters();
+  applyFilters();
+}
+
+function initFilters() {
+  populateFilters();
+}
+
 // Daily data
 function generateDailyData(kol, days) {
   const data = [];
@@ -264,9 +305,9 @@ function generateDailyData(kol, days) {
 }
 
 let DAILY_DATA = {};
-KOL_DATA.forEach(k => { DAILY_DATA[k.username] = generateDailyData(k, 28); });
+KOL_DATA_ACTIVE.forEach(k => { DAILY_DATA[k.username] = generateDailyData(k, 28); });
 
-let filteredData = [...KOL_DATA];
+let filteredData = [...KOL_DATA_ACTIVE];
 let charts = {};
 
 // ==================== INIT ====================
@@ -276,25 +317,25 @@ function init() {
 }
 
 function populateFilters() {
-  populateSelect('filterPlatform', [...new Set(KOL_DATA.map(k => k.platform))]);
-  populateSelect('filterCategory', [...new Set(KOL_DATA.map(k => k.category))]);
-  populateSelect('filterTier', [...new Set(KOL_DATA.map(k => k.tier))]);
-  populateSelect('filterProduct', [...new Set(KOL_DATA.map(k => k.product).filter(Boolean))]);
-  populateSelect('filterKOL', KOL_DATA.map(k => k.username));
+  populateSelect('filterPlatform', [...new Set(KOL_DATA_ACTIVE.map(k => k.platform))]);
+  populateSelect('filterCategory', [...new Set(KOL_DATA_ACTIVE.map(k => k.category))]);
+  populateSelect('filterTier', [...new Set(KOL_DATA_ACTIVE.map(k => k.tier))]);
+  populateSelect('filterProduct', [...new Set(KOL_DATA_ACTIVE.map(k => k.product).filter(Boolean))]);
+  populateSelect('filterKOL', KOL_DATA_ACTIVE.map(k => k.username));
   buildQuickTabs();
   buildProductTabs();
 }
 
 function buildQuickTabs() {
-  const cats = [...new Set(KOL_DATA.map(k => k.category).filter(Boolean))].sort();
+  const cats = [...new Set(KOL_DATA_ACTIVE.map(k => k.category).filter(Boolean))].sort();
   const container = document.getElementById('quickTabs');
   const current = document.getElementById('filterCategory').value;
 
-  let html = `<div class="quick-tab ${current === 'all' ? 'active' : ''}" onclick="quickFilter('all')">🌐 ทั้งหมด<span class="count">${KOL_DATA.length}</span></div>`;
+  let html = `<div class="quick-tab ${current === 'all' ? 'active' : ''}" onclick="quickFilter('all')">🌐 ทั้งหมด<span class="count">${KOL_DATA_ACTIVE.length}</span></div>`;
 
   const icons = {'ทำงานกลางแจ้ง':'☀️','Heath & Beauty':'💄','หนุ่มสาวโรงงาน':'🏭'};
   cats.forEach(c => {
-    const count = KOL_DATA.filter(k => k.category === c).length;
+    const count = KOL_DATA_ACTIVE.filter(k => k.category === c).length;
     const icon = icons[c] || '📂';
     html += `<div class="quick-tab ${current === c ? 'active' : ''}" onclick="quickFilter('${c}')">${icon} ${c}<span class="count">${count}</span></div>`;
   });
@@ -303,15 +344,15 @@ function buildQuickTabs() {
 }
 
 function buildProductTabs() {
-  const products = [...new Set(KOL_DATA.map(k => k.product).filter(Boolean))].sort();
+  const products = [...new Set(KOL_DATA_ACTIVE.map(k => k.product).filter(Boolean))].sort();
   const container = document.getElementById('productTabs');
   const current = document.getElementById('filterProduct').value;
 
-  let html = `<div class="quick-tab ${current === 'all' ? 'active' : ''}" onclick="productFilter('all')">🧴 All Products<span class="count">${KOL_DATA.length}</span></div>`;
+  let html = `<div class="quick-tab ${current === 'all' ? 'active' : ''}" onclick="productFilter('all')">🧴 All Products<span class="count">${KOL_DATA_ACTIVE.length}</span></div>`;
 
   const icons = {'VitC':'🍊','Collagen':'🩷','Fiber':'🥬'};
   products.forEach(p => {
-    const count = KOL_DATA.filter(k => k.product === p).length;
+    const count = KOL_DATA_ACTIVE.filter(k => k.product === p).length;
     const icon = icons[p] || '💊';
     html += `<div class="quick-tab ${current === p ? 'active' : ''}" onclick="productFilter('${p}')">${icon} ${p}<span class="count">${count}</span></div>`;
   });
@@ -349,7 +390,7 @@ function applyFilters() {
   const status = document.getElementById('filterStatus').value;
   const kol = document.getElementById('filterKOL').value;
 
-  filteredData = KOL_DATA.filter(k => {
+  filteredData = KOL_DATA_ACTIVE.filter(k => {
     if (platform !== 'all' && k.platform !== platform) return false;
     if (category !== 'all' && k.category !== category) return false;
     if (tier !== 'all' && k.tier !== tier) return false;
@@ -387,7 +428,7 @@ function renderKPIs() {
 
   const row0Data = d;
   const row0Views = row0Data.reduce((a, k) => a + k.views, 0);
-  const allViews = KOL_DATA.reduce((a, k) => a + k.views, 0);
+  const allViews = KOL_DATA_ACTIVE.reduce((a, k) => a + k.views, 0);
   const kpiTarget = isFiltered ? '-' : fmtNum(CAMPAIGN_KPI_VIEWS);
   const kpiAchieve = isFiltered ? ((row0Views / CAMPAIGN_KPI_VIEWS) * 100).toFixed(1) : ((allViews / CAMPAIGN_KPI_VIEWS) * 100).toFixed(1);
   const budgetAchieve = CAMPAIGN_MEDIA_BUDGET > 0 ? ((CAMPAIGN_ACTUAL_USE / CAMPAIGN_MEDIA_BUDGET) * 100).toFixed(1) : '0.0';
@@ -445,7 +486,7 @@ function renderKPIs() {
   ].join('');
 
   // Update creator count in table title
-  document.getElementById('creatorCount').textContent = `(${KOL_DATA.length} Creators)`;
+  document.getElementById('creatorCount').textContent = `(${KOL_DATA_ACTIVE.length} Creators)`;
 }
 
 function kpiCard(label, value, sub, isDailyZero, colorHint) {
@@ -624,8 +665,8 @@ function renderRank(containerId, sorted, field) {
 function renderProductChart() {
   if (charts.product) charts.product.destroy();
   const ctx = document.getElementById('productChart');
-  const products = [...new Set(KOL_DATA.map(k => k.product).filter(Boolean))];
-  const counts = products.map(p => KOL_DATA.filter(k => k.product === p).length);
+  const products = [...new Set(KOL_DATA_ACTIVE.map(k => k.product).filter(Boolean))];
+  const counts = products.map(p => KOL_DATA_ACTIVE.filter(k => k.product === p).length);
   const colorMap = {'VitC':'#f97316','Collagen':'#ec4899','Fiber':'#22c55e'};
   const bgColors = products.map(p => colorMap[p] || '#3370ff');
 
@@ -637,7 +678,7 @@ function renderProductChart() {
 
   let legendHtml = '';
   products.forEach((p, i) => {
-    legendHtml += `<div style="margin-bottom:4px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${bgColors[i]};margin-right:6px"></span>${p}: ${counts[i]} (${((counts[i]/KOL_DATA.length)*100).toFixed(0)}%)</div>`;
+    legendHtml += `<div style="margin-bottom:4px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${bgColors[i]};margin-right:6px"></span>${p}: ${counts[i]} (${((counts[i]/KOL_DATA_ACTIVE.length)*100).toFixed(0)}%)</div>`;
   });
   document.getElementById('productLegend').innerHTML = legendHtml;
 }
@@ -704,10 +745,11 @@ function importCSV(event) {
     }
 
     if (newData.length > 0) {
-      KOL_DATA = newData;
+      KOL_DATA_ACTIVE = newData;
+      if (currentLot === 1) KOL_DATA = newData; else KOL_DATA_LOT2 = newData;
       DAILY_DATA = {};
-      KOL_DATA.forEach(k => { DAILY_DATA[k.username] = generateDailyData(k, 28); });
-      filteredData = [...KOL_DATA];
+      KOL_DATA_ACTIVE.forEach(k => { DAILY_DATA[k.username] = generateDailyData(k, 28); });
+      filteredData = [...KOL_DATA_ACTIVE];
       populateFilters();
       applyFilters();
       alert(`นำเข้าสำเร็จ! ${newData.length} KOLs`);
@@ -743,9 +785,9 @@ function addKOLPrompt() {
 
   const tier = followers < 100000 ? 'Micro' : followers < 1000000 ? 'Macro' : 'Mega';
 
-  KOL_DATA.push({ username, displayName, tier, platform: 'TikTok', category, product, gender: '', followers, views: 0, likes: 0, shares: 0, comments: 0, saves: 0, posts: 0, kpi_views: 0, posted: false, link: '', budget });
-  DAILY_DATA[username] = generateDailyData(KOL_DATA[KOL_DATA.length - 1], 28);
-  filteredData = [...KOL_DATA];
+  KOL_DATA_ACTIVE.push({ username, displayName, tier, platform: 'TikTok', category, product, gender: '', followers, views: 0, likes: 0, shares: 0, comments: 0, saves: 0, posts: 0, kpi_views: 0, posted: false, link: '', budget });
+  DAILY_DATA[username] = generateDailyData(KOL_DATA_ACTIVE[KOL_DATA_ACTIVE.length - 1], 28);
+  filteredData = [...KOL_DATA_ACTIVE];
   populateFilters();
   applyFilters();
 }
@@ -807,10 +849,11 @@ function importJSON(event) {
       }).filter(k => k.username);
 
       if (newData.length > 0) {
-        KOL_DATA = newData;
+        KOL_DATA_ACTIVE = newData;
+        if (currentLot === 1) KOL_DATA = newData; else KOL_DATA_LOT2 = newData;
         DAILY_DATA = {};
-        KOL_DATA.forEach(k => { DAILY_DATA[k.username] = generateDailyData(k, 28); });
-        filteredData = [...KOL_DATA];
+        KOL_DATA_ACTIVE.forEach(k => { DAILY_DATA[k.username] = generateDailyData(k, 28); });
+        filteredData = [...KOL_DATA_ACTIVE];
         populateFilters();
         applyFilters();
         alert(`นำเข้าสำเร็จ! ${newData.length} KOLs จาก JSON`);

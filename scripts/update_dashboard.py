@@ -53,17 +53,50 @@ KOL_LINKS = {
 # === KOLs ที่ยังไม่โพสต์ ===
 NOT_POSTED_KOLS = set()  # ทุกคนโพสต์แล้ว
 
+# === LOT 2 DATA ===
+KOL_METADATA_LOT2 = {
+    'kunofficial29':  {'followers': 245600,  'tier': 'Macro', 'category': 'หนุ่มสาวโรงงาน', 'product': 'Fiber',    'displayName': 'kunofficial29',  'gender': 'ช', 'budget': 15000},
+    'aeaeyberry':     {'followers': 179100,  'tier': 'Macro', 'category': 'หนุ่มสาวโรงงาน', 'product': 'Fiber',    'displayName': 'aeaeyberry',     'gender': 'ญ', 'budget': 15000},
+    'fymme_':         {'followers': 215400,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'fymme_',         'gender': 'ญ', 'budget': 10000},
+    'bonuss_19':      {'followers': 1100000, 'tier': 'Mega',  'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'bonuss_19',      'gender': 'ญ', 'budget': 25000},
+    'marumari141':    {'followers': 466300,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'marumari141',    'gender': 'ญ', 'budget': 20000},
+    'yanisskkk':      {'followers': 75600,   'tier': 'Micro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'yanisskkk',      'gender': 'ญ', 'budget': 10000},
+    'chanyanuch.hh':  {'followers': 287800,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'chanyanuch.hh',  'gender': 'ญ', 'budget': 10000},
+    'natkritta_taew': {'followers': 534000,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'natkritta_taew', 'gender': 'ญ', 'budget': 13000},
+    'pukjira45':      {'followers': 436700,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'pukjira45',      'gender': 'ญ', 'budget': 13000},
+}
 
-def build_kol_data_js(scrape_data):
+KOL_LINKS_LOT2 = {
+    'kunofficial29': 'https://vt.tiktok.com/ZSxRPx9qL/',
+    'bonuss_19': 'https://vt.tiktok.com/ZS9cyHrXx/',
+    'marumari141': 'https://vt.tiktok.com/ZSxR6R5sx/',
+    'yanisskkk': 'https://vt.tiktok.com/ZSxRPpV8s/',
+}
+
+NOT_POSTED_KOLS_LOT2 = {'aeaeyberry', 'fymme_', 'chanyanuch.hh', 'natkritta_taew', 'pukjira45'}
+
+
+def build_kol_data_js(scrape_data, lot=1):
     """Build the KOL_DATA JavaScript array from scrape results + metadata."""
     from datetime import datetime
     timestamp = datetime.now().strftime('%d %b %Y %H:%M')
 
-    lines = [f"let KOL_DATA = [  // auto-updated {timestamp}"]
+    if lot == 1:
+        metadata = KOL_METADATA
+        links = KOL_LINKS
+        not_posted = NOT_POSTED_KOLS
+        var_name = 'KOL_DATA'
+    else:
+        metadata = KOL_METADATA_LOT2
+        links = KOL_LINKS_LOT2
+        not_posted = NOT_POSTED_KOLS_LOT2
+        var_name = 'KOL_DATA_LOT2'
 
-    for username, meta in KOL_METADATA.items():
+    lines = [f"let {var_name} = [  // auto-updated {timestamp}"]
+
+    for username, meta in metadata.items():
         scraped = scrape_data.get(username, {})
-        is_posted = username not in NOT_POSTED_KOLS and username in KOL_LINKS
+        is_posted = username not in not_posted and username in links
 
         followers = scraped.get('followers', 0) or meta['followers']
         views = scraped.get('views', 0)
@@ -72,7 +105,7 @@ def build_kol_data_js(scrape_data):
         comments = scraped.get('comments', 0)
         saves = scraped.get('saves', 0)
         posts = 1 if is_posted else 0
-        link = KOL_LINKS.get(username, '')
+        link = links.get(username, '')
 
         line = (
             f"  {{username:'{username}',"
@@ -100,8 +133,13 @@ def build_kol_data_js(scrape_data):
     return "\n".join(lines)
 
 
+def build_kol_data_lot2_js(scrape_data):
+    """Build the KOL_DATA_LOT2 JavaScript array."""
+    return build_kol_data_js(scrape_data, lot=2)
+
+
 def update_html(html_path, scrape_data, preserve_actual_use=True):
-    """Replace KOL_DATA in the HTML file with updated data."""
+    """Replace KOL_DATA and KOL_DATA_LOT2 in the HTML file with updated data."""
     with open(html_path, 'r', encoding='utf-8') as f:
         html = f.read()
 
@@ -109,10 +147,23 @@ def update_html(html_path, scrape_data, preserve_actual_use=True):
     actual_use_match = re.search(r'CAMPAIGN_ACTUAL_USE_DEFAULT\s*=\s*([\d.]+)', html)
     actual_use_val = actual_use_match.group(1) if actual_use_match else '0'
 
-    # Replace KOL_DATA array
-    new_kol_data = build_kol_data_js(scrape_data)
-    pattern = r'let KOL_DATA\s*=\s*\[.*?\];'
+    # Replace KOL_DATA array (Lot 1) — use negative lookahead to avoid matching KOL_DATA_LOT2
+    new_kol_data = build_kol_data_js(scrape_data, lot=1)
+    pattern = r'let KOL_DATA(?!_LOT2)\s*=\s*\[.*?\];'
     html = re.sub(pattern, new_kol_data, html, flags=re.DOTALL)
+
+    # Replace or insert KOL_DATA_LOT2 array (Lot 2)
+    new_kol_data_lot2 = build_kol_data_lot2_js(scrape_data)
+    pattern_lot2 = r'let KOL_DATA_LOT2\s*=\s*\[.*?\];'
+    if re.search(pattern_lot2, html, flags=re.DOTALL):
+        html = re.sub(pattern_lot2, new_kol_data_lot2, html, flags=re.DOTALL)
+    else:
+        # Insert after KOL_DATA's closing ];
+        # Find the end of the KOL_DATA array we just inserted
+        kol_data_match = re.search(r'(let KOL_DATA\s*=\s*\[.*?\];)', html, flags=re.DOTALL)
+        if kol_data_match:
+            insert_pos = kol_data_match.end()
+            html = html[:insert_pos] + '\n\n' + new_kol_data_lot2 + html[insert_pos:]
 
     # Restore CAMPAIGN_ACTUAL_USE_DEFAULT if needed
     if preserve_actual_use:
@@ -125,7 +176,7 @@ def update_html(html_path, scrape_data, preserve_actual_use=True):
     with open(html_path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-    print(f"✅ Updated {html_path}")
+    print(f"✅ Updated {html_path} (Lot 1 + Lot 2)")
 
 
 def main():

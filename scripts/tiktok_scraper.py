@@ -37,6 +37,14 @@ KOL_LINKS = {
     # เพิ่ม KOL ใหม่ที่โพสต์แล้วตรงนี้:
 }
 
+# === LOT 2 KOL VIDEO LINKS ===
+KOL_LINKS_LOT2 = {
+    'kunofficial29': 'https://vt.tiktok.com/ZSxRPx9qL/',
+    'bonuss_19': 'https://vt.tiktok.com/ZS9cyHrXx/',
+    'marumari141': 'https://vt.tiktok.com/ZSxR6R5sx/',
+    'yanisskkk': 'https://vt.tiktok.com/ZSxRPpV8s/',
+}
+
 
 def scrape_with_ytdlp(url):
     """Scrape metrics using yt-dlp (gets saves/collectCount)."""
@@ -166,6 +174,9 @@ def main():
     output_file = sys.argv[1] if len(sys.argv) > 1 else 'scrape_results.json'
 
     results = {}
+
+    # Scrape Lot 1
+    print("=== Scraping Lot 1 ===")
     for username, link in KOL_LINKS.items():
         print(f"Scraping {username} ({link})...")
         data = scrape_tiktok(link)
@@ -176,11 +187,24 @@ def main():
             print(f"  ❌ Failed to scrape")
         time.sleep(1)
 
+    # Scrape Lot 2
+    print("\n=== Scraping Lot 2 ===")
+    for username, link in KOL_LINKS_LOT2.items():
+        print(f"Scraping {username} ({link})...")
+        data = scrape_tiktok(link)
+        if data:
+            results[username] = data
+            print(f"  ✅ views={data['views']}, likes={data['likes']}, shares={data['shares']}, comments={data['comments']}, saves={data['saves']}")
+        else:
+            print(f"  ❌ Failed to scrape")
+        time.sleep(1)
+
+    all_links = {**KOL_LINKS, **KOL_LINKS_LOT2}
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
 
     print(f"\n📁 Results saved to {output_file}")
-    print(f"   {len(results)}/{len(KOL_LINKS)} KOLs scraped successfully")
+    print(f"   {len(results)}/{len(all_links)} KOLs scraped successfully (Lot 1 + Lot 2)")
 
 
 if __name__ == '__main__':
