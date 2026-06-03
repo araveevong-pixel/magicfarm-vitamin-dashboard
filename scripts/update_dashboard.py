@@ -64,16 +64,36 @@ KOL_METADATA_LOT2 = {
     'chanyanuch.hh':  {'followers': 287800,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'chanyanuch.hh',  'gender': 'ญ', 'budget': 10000},
     'natkritta_taew': {'followers': 534000,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'natkritta_taew', 'gender': 'ญ', 'budget': 13000},
     'pukjira45':      {'followers': 436700,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'pukjira45',      'gender': 'ญ', 'budget': 13000},
+    'benz_benzzzz12': {'followers': 72000,   'tier': 'Micro', 'category': 'หนุ่มสาวโรงงาน', 'product': 'Fiber',    'displayName': 'benz_benzzzz12', 'gender': 'ช', 'budget': 10000},
+    'pang_urw':       {'followers': 281900,  'tier': 'Macro', 'category': 'หนุ่มสาวโรงงาน', 'product': 'Collagen', 'displayName': 'pang_urw',       'gender': 'ญ', 'budget': 10000},
+    'watermell':      {'followers': 251500,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'watermell',      'gender': 'ญ', 'budget': 14000},
+    'mild.melody08':  {'followers': 1100000, 'tier': 'Mega',  'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'mild.melody08',  'gender': 'ญ', 'budget': 16000},
+    'yoke1645':       {'followers': 326900,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Fiber',    'displayName': 'yoke1645',       'gender': 'ญ', 'budget': 10000},
+    'zaiisivaporn':   {'followers': 933200,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'zaiisivaporn',   'gender': 'ญ', 'budget': 16000},
+    'airfrostt_':     {'followers': 358500,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'airfrostt_',     'gender': 'ญ', 'budget': 10000},
+    '_filmmwr':       {'followers': 128900,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': '_filmmwr',       'gender': 'ญ', 'budget': 10000},
+    'kanyarat0640':   {'followers': 1100000, 'tier': 'Mega',  'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'kanyarat0640',   'gender': 'ญ', 'budget': 9000},
+    'momelontt':      {'followers': 94100,   'tier': 'Micro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'momelontt',      'gender': 'ญ', 'budget': 4500},
 }
 
 KOL_LINKS_LOT2 = {
     'kunofficial29': 'https://vt.tiktok.com/ZSxRPx9qL/',
+    'aeaeyberry': 'https://vt.tiktok.com/ZSxy2KAd4/',
+    'fymme_': 'https://vt.tiktok.com/ZSxMPH2fk/',
     'bonuss_19': 'https://vt.tiktok.com/ZS9cyHrXx/',
     'marumari141': 'https://vt.tiktok.com/ZSxR6R5sx/',
     'yanisskkk': 'https://vt.tiktok.com/ZSxRPpV8s/',
+    'chanyanuch.hh': 'https://vt.tiktok.com/ZSxyj69dG/',
+    'natkritta_taew': 'https://vt.tiktok.com/ZSxkTuPMM/',
+    'pukjira45': 'https://vt.tiktok.com/ZSxQT9AJ5/',
+    'benz_benzzzz12': 'https://vt.tiktok.com/ZSxgQkmQQ/',
+    'mild.melody08': 'https://vt.tiktok.com/ZSxQC85Rk/',
+    'yoke1645': 'https://vt.tiktok.com/ZSxQQKLTM/',
+    'zaiisivaporn': 'https://vt.tiktok.com/ZSx3cjWLk/',
+    'airfrostt_': 'https://vt.tiktok.com/ZSxc2wAPw/',
 }
 
-NOT_POSTED_KOLS_LOT2 = {'aeaeyberry', 'fymme_', 'chanyanuch.hh', 'natkritta_taew', 'pukjira45'}
+NOT_POSTED_KOLS_LOT2 = {'pang_urw', 'watermell', '_filmmwr', 'kanyarat0640', 'momelontt'}
 
 
 def build_kol_data_js(scrape_data, lot=1):

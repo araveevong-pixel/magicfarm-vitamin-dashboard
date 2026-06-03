@@ -40,9 +40,19 @@ KOL_LINKS = {
 # === LOT 2 KOL VIDEO LINKS ===
 KOL_LINKS_LOT2 = {
     'kunofficial29': 'https://vt.tiktok.com/ZSxRPx9qL/',
+    'aeaeyberry': 'https://vt.tiktok.com/ZSxy2KAd4/',
+    'fymme_': 'https://vt.tiktok.com/ZSxMPH2fk/',
     'bonuss_19': 'https://vt.tiktok.com/ZS9cyHrXx/',
     'marumari141': 'https://vt.tiktok.com/ZSxR6R5sx/',
     'yanisskkk': 'https://vt.tiktok.com/ZSxRPpV8s/',
+    'chanyanuch.hh': 'https://vt.tiktok.com/ZSxyj69dG/',
+    'natkritta_taew': 'https://vt.tiktok.com/ZSxkTuPMM/',
+    'pukjira45': 'https://vt.tiktok.com/ZSxQT9AJ5/',
+    'benz_benzzzz12': 'https://vt.tiktok.com/ZSxgQkmQQ/',
+    'mild.melody08': 'https://vt.tiktok.com/ZSxQC85Rk/',
+    'yoke1645': 'https://vt.tiktok.com/ZSxQQKLTM/',
+    'zaiisivaporn': 'https://vt.tiktok.com/ZSx3cjWLk/',
+    'airfrostt_': 'https://vt.tiktok.com/ZSxc2wAPw/',
 }
 
 
