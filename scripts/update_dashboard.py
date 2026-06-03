@@ -74,6 +74,7 @@ KOL_METADATA_LOT2 = {
     '_filmmwr':       {'followers': 128900,  'tier': 'Macro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': '_filmmwr',       'gender': 'ญ', 'budget': 10000},
     'kanyarat0640':   {'followers': 1100000, 'tier': 'Mega',  'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'kanyarat0640',   'gender': 'ญ', 'budget': 9000},
     'momelontt':      {'followers': 94100,   'tier': 'Micro', 'category': 'Heath & Beauty', 'product': 'Collagen', 'displayName': 'momelontt',      'gender': 'ญ', 'budget': 4500},
+    'kuanpuantiew':   {'followers': 1200000, 'tier': 'Mega',  'category': 'ทำงานกลางแจ้ง', 'product': 'Collagen', 'displayName': 'kuanpuantiew',   'gender': 'ช', 'budget': 20000},
 }
 
 KOL_LINKS_LOT2 = {
@@ -93,7 +94,7 @@ KOL_LINKS_LOT2 = {
     'airfrostt_': 'https://vt.tiktok.com/ZSxc2wAPw/',
 }
 
-NOT_POSTED_KOLS_LOT2 = {'pang_urw', 'watermell', '_filmmwr', 'kanyarat0640', 'momelontt'}
+NOT_POSTED_KOLS_LOT2 = {'pang_urw', 'watermell', '_filmmwr', 'kanyarat0640', 'momelontt', 'kuanpuantiew'}
 
 
 def build_kol_data_js(scrape_data, lot=1):
