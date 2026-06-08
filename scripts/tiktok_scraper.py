@@ -53,6 +53,11 @@ KOL_LINKS_LOT2 = {
     'yoke1645': 'https://vt.tiktok.com/ZSxQQKLTM/',
     'zaiisivaporn': 'https://vt.tiktok.com/ZSx3cjWLk/',
     'airfrostt_': 'https://vt.tiktok.com/ZSxc2wAPw/',
+    'watermell': 'https://vt.tiktok.com/ZSQRFEPyK/',
+    '_filmmwr': 'https://vt.tiktok.com/ZSQdTsv7j/',
+    'kanyarat0640': 'https://vt.tiktok.com/ZSQJ8qRD3/',
+    'momelontt': 'https://vt.tiktok.com/ZSQReyxar/',
+    'kuanpuantiew': 'https://vt.tiktok.com/ZSQ8NrkFd/',
 }
 
 
