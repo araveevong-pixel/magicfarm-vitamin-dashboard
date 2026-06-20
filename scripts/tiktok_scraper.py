@@ -58,7 +58,7 @@ KOL_LINKS_LOT2 = {
     'kanyarat0640': 'https://vt.tiktok.com/ZSQJ8qRD3/',
     'momelontt': 'https://vt.tiktok.com/ZSQReyxar/',
     'kuanpuantiew': 'https://vt.tiktok.com/ZSQ8NrkFd/',
-    'pang_urw': 'https://vt.tiktok.com/ZSQkQr1g5/',
+    'pang_urw': 'https://www.tiktok.com/@pang_urw/video/7649314817748077831',
 }
 
 
