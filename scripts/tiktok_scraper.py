@@ -172,15 +172,135 @@ def scrape_with_urllib(url, retries=3):
     return None
 
 
+def extract_video_id(url):
+    """Extract TikTok video ID from URL."""
+    m = re.search(r'/video/(\d+)', url)
+    return m.group(1) if m else None
+
+
+def scrape_with_tiktok_api(url, retries=3):
+    """Fallback for age-restricted: use TikTok's web API endpoint."""
+    video_id = extract_video_id(url)
+    if not video_id:
+        # Try to resolve short URL first to get video ID
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        try:
+            req = urllib.request.Request(url, headers={
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15'
+            })
+            with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
+                resolved = resp.url
+            video_id = extract_video_id(resolved)
+        except:
+            pass
+    if not video_id:
+        print(f"  Could not extract video ID from {url}")
+        return None
+
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    # Try TikTok web API
+    api_url = f'https://www.tiktok.com/api/item/detail/?itemId={video_id}'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Referer': 'https://www.tiktok.com/',
+    }
+
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(api_url, headers=headers)
+            with urllib.request.urlopen(req, context=ctx, timeout=30) as resp:
+                data = json.loads(resp.read().decode('utf-8', errors='ignore'))
+
+            item = data.get('itemInfo', {}).get('itemStruct', {})
+            stats = item.get('stats', {})
+            author = item.get('authorStats', {})
+
+            if stats.get('playCount', 0) > 0:
+                return {
+                    'views': int(stats.get('playCount', 0)),
+                    'likes': int(stats.get('diggCount', 0)),
+                    'shares': int(stats.get('shareCount', 0)),
+                    'comments': int(stats.get('commentCount', 0)),
+                    'saves': int(stats.get('collectCount', 0)),
+                    'followers': int(author.get('followerCount', 0)),
+                }
+        except Exception as e:
+            print(f"  TikTok API attempt {attempt+1} failed: {e}")
+            time.sleep(2)
+
+    # Try oEmbed as last resort (only gets basic info)
+    try:
+        oembed_url = f'https://www.tiktok.com/oembed?url=https://www.tiktok.com/@placeholder/video/{video_id}'
+        req = urllib.request.Request(oembed_url, headers=headers)
+        with urllib.request.urlopen(req, context=ctx, timeout=15) as resp:
+            oembed = json.loads(resp.read().decode('utf-8', errors='ignore'))
+        # oEmbed doesn't have counts, but confirms video exists
+        print(f"  oEmbed found: {oembed.get('title', 'unknown')[:50]}")
+    except:
+        pass
+
+    return None
+
+
+def scrape_with_ytdlp_mobile(url):
+    """Try yt-dlp with mobile extractor args for age-restricted content."""
+    try:
+        result = subprocess.run(
+            ['yt-dlp', '--dump-json', '--no-download', '--no-warnings',
+             '--extractor-args', 'tiktok:api_hostname=api16-normal-c-useast1a.tiktokv.com',
+             url],
+            capture_output=True, text=True, timeout=60
+        )
+        if result.returncode != 0:
+            return None
+
+        info = json.loads(result.stdout)
+        return {
+            'views': int(info.get('view_count', 0) or 0),
+            'likes': int(info.get('like_count', 0) or 0),
+            'shares': int(info.get('repost_count', 0) or 0),
+            'comments': int(info.get('comment_count', 0) or 0),
+            'saves': int(info.get('save_count')
+                        or info.get('collect_count')
+                        or info.get('favorite_count')
+                        or info.get('bookmark_count')
+                        or 0),
+            'followers': int(info.get('channel_follower_count', 0) or 0),
+        }
+    except Exception as e:
+        print(f"  yt-dlp mobile failed: {e}")
+        return None
+
+
 def scrape_tiktok(url):
-    """Scrape TikTok: try yt-dlp first, fall back to urllib."""
+    """Scrape TikTok: try yt-dlp first, then mobile API, then web API, then urllib."""
     # Try yt-dlp first (gets saves)
     data = scrape_with_ytdlp(url)
     if data and data['views'] > 0:
         print(f"  (yt-dlp)")
         return data
 
-    # Fallback to urllib
+    # Try yt-dlp with mobile API endpoint (for age-restricted)
+    print(f"  (trying yt-dlp mobile API...)")
+    data = scrape_with_ytdlp_mobile(url)
+    if data and data['views'] > 0:
+        print(f"  (yt-dlp mobile)")
+        return data
+
+    # Try TikTok web API (for age-restricted)
+    print(f"  (trying TikTok web API...)")
+    data = scrape_with_tiktok_api(url)
+    if data and data['views'] > 0:
+        print(f"  (TikTok API)")
+        return data
+
+    # Final fallback to urllib
     print(f"  (fallback to urllib)")
     data = scrape_with_urllib(url)
     return data
