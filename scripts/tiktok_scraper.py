@@ -61,6 +61,23 @@ KOL_LINKS_LOT2 = {
     'pang_urw': 'https://www.tiktok.com/@pang_urw/video/7649314817748077831',
 }
 
+# === MANUAL OVERRIDES ===
+# For KOLs whose videos can't be scraped (e.g. age-restricted content),
+# manually set their stats here. These are used as fallback when scraping returns 0.
+# Update these values periodically by checking TikTok directly.
+# Format: 'username': {'views': N, 'likes': N, 'shares': N, 'comments': N, 'saves': N, 'followers': N}
+MANUAL_OVERRIDES = {
+    'pang_urw': {
+        'views': 543000,
+        'likes': 944,
+        'shares': 11,
+        'comments': 8,
+        'saves': 26,
+        'followers': 283000,
+        '_note': 'Age-restricted video, stats from 2026-06-22'
+    },
+}
+
 
 def scrape_with_ytdlp(url):
     """Scrape metrics using yt-dlp (gets saves/collectCount)."""
@@ -316,6 +333,11 @@ def main():
     for username, link in KOL_LINKS.items():
         print(f"Scraping {username} ({link})...")
         data = scrape_tiktok(link)
+        # Apply manual override if scraping returned 0 views
+        if (not data or data.get('views', 0) == 0) and username in MANUAL_OVERRIDES:
+            override = {k: v for k, v in MANUAL_OVERRIDES[username].items() if not k.startswith('_')}
+            data = override
+            print(f"  ⚠️ Using manual override (scraping failed/age-restricted)")
         if data:
             results[username] = data
             print(f"  ✅ views={data['views']}, likes={data['likes']}, shares={data['shares']}, comments={data['comments']}, saves={data['saves']}")
@@ -328,6 +350,11 @@ def main():
     for username, link in KOL_LINKS_LOT2.items():
         print(f"Scraping {username} ({link})...")
         data = scrape_tiktok(link)
+        # Apply manual override if scraping returned 0 views
+        if (not data or data.get('views', 0) == 0) and username in MANUAL_OVERRIDES:
+            override = {k: v for k, v in MANUAL_OVERRIDES[username].items() if not k.startswith('_')}
+            data = override
+            print(f"  ⚠️ Using manual override (scraping failed/age-restricted)")
         if data:
             results[username] = data
             print(f"  ✅ views={data['views']}, likes={data['likes']}, shares={data['shares']}, comments={data['comments']}, saves={data['saves']}")
